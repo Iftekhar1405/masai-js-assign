@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Word Count : <span class="Count"></span></h1>
+    <input type="text" class="input">
+    <button onclick="count()">Go</button>
+
+</body>
+<script>
+    function count(){
+        let words = document.querySelector('.input').value
+        let count = words.length
+        document.querySelector('.Count').innerText = count
+    }
+</script>
+</html>
