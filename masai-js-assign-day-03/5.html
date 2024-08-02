@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" name="" id="">
+    <button onclick="count()">
+        count words: <span class="count"></span>
+    </button>
+    <button onclick="lower()">
+     convert to lowercase: <span class="lower"></span>
+    </button>
+    <button onclick="upper()">
+        convert to UPPERCASE: <span class="upper"></span>
+    </button>
+</body>
+<script>
+    let words = document.querySelector('input').value
+    function count(){
+        document.querySelector('.count').innerHTML = words.length
+    }
+    function lower(){
+        document.querySelector('.lower').innerHTML = words.toLowerCase()
+    }
+    function upper(){
+        document.querySelector('.upper').innerHTML = words.toUpperCase()
+    }
+</script>
+</html>
