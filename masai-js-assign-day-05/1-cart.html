@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        .cart-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+        .cart-item p {
+            margin: 0;
+        }
+        .cart-item button {
+            padding: 5px 10px;
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="cart-container">
+        <h2>Your Cart</h2>
+        <div class="cart-items"></div>
+    </div>
+
+    <script>
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+        function displayCartItems() {
+            let cartItemsContainer = document.querySelector('.cart-items');
+            cartItemsContainer.innerHTML = ''; // Clear any existing content
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+                return;
+            }
+
+            cart.forEach((item, index) => {
+                let cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+
+                let itemInfo = document.createElement('div');
+                itemInfo.innerHTML = `<p><strong>Name:</strong> ${item.name}</p>
+                                      <p><strong>Username:</strong> ${item.username}</p>
+                                      <p><strong>Email:</strong> ${item.email}</p>`;
+
+                let removeButton = document.createElement('button');
+                removeButton.innerText = 'Remove';
+                removeButton.onclick = function() {
+                    removeItemFromCart(index);
+                };
+
+                cartItem.appendChild(itemInfo);
+                cartItem.appendChild(removeButton);
+
+                cartItemsContainer.appendChild(cartItem);
+            });
+        }
+
+        function removeItemFromCart(index) {
+            cart.splice(index, 1); 
+            localStorage.setItem('cart', JSON.stringify(cart));
+            displayCartItems(); 
+        }
+
+        displayCartItems();
+    </script>
+</body>
+</html>
