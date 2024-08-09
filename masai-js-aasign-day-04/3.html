@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product List</title>
+    <style>
+        .product-list {
+            margin-top: 20px;
+        }
+        .product {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 5px;
+        }
+        .product button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <input type="text" id="name" placeholder="Product Name">
+    <input type="number" id="price" placeholder="Product Price">
+    <button type="button" onclick="addProduct()">Add Product</button>
+    <div class="product-list"></div>
+
+    <script>
+        function addProduct() {
+            let name = document.getElementById('name').value;
+            let price = document.getElementById('price').value;
+            let productList = document.querySelector('.product-list');
+
+            if (name && price) {
+                let product = document.createElement('div');
+                product.classList.add('product');
+                product.innerHTML = `<span>${name} - $${price}</span>`;
+
+                let delButton = document.createElement('button');
+                delButton.innerText = 'Delete';
+                delButton.onclick = function() {
+                    productList.removeChild(product);
+                };
+
+                product.appendChild(delButton);
+                productList.appendChild(product);
+                document.getElementById('name').value = '';
+                document.getElementById('price').value = '';
+            } else {
+                alert("Please enter both name and price");
+            }
+        }
+    </script>
+</body>
+</html>
