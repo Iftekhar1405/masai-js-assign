@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Timer Application</title>
+    <style>
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+}
+
+.timer-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.time-display {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.controls button {
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#start-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+#stop-button {
+    background-color: #f44336;
+    color: white;
+}
+
+#reset-button {
+    background-color: #555555;
+    color: white;
+}
+
+    </style>
+</head>
+<body>
+    <div class="timer-container">
+        <h1>Simple Timer</h1>
+        <div class="time-display" id="time-display">00:00:00</div>
+        <div class="controls">
+            <button id="start-button">Start</button>
+            <button id="stop-button">Stop</button>
+            <button id="reset-button">Reset</button>
+        </div>
+    </div>
+    <script>
+
+let timerInterval;
+let elapsedTime = 0;
+
+const timeDisplay = document.getElementById('time-display');
+const startButton = document.getElementById('start-button');
+const stopButton = document.getElementById('stop-button');
+const resetButton = document.getElementById('reset-button');
+
+function formatTime(time) {
+    const hours = String(Math.floor(time / 3600)).padStart(2, '0');
+    const minutes = String(Math.floor((time % 3600) / 60)).padStart(2, '0');
+    const seconds = String(time % 60).padStart(2, '0');
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+function updateTimeDisplay() {
+    timeDisplay.textContent = formatTime(elapsedTime);
+}
+
+startButton.addEventListener('click', () => {
+    if (!timerInterval) {
+        timerInterval = setInterval(() => {
+            elapsedTime++;
+            updateTimeDisplay();
+        }, 1000);
+    }
+});
+
+stopButton.addEventListener('click', () => {
+    clearInterval(timerInterval);
+    timerInterval = null;
+});
+
+resetButton.addEventListener('click', () => {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    elapsedTime = 0;
+    updateTimeDisplay();
+});
+
+updateTimeDisplay();
+
+    </script>
+</body>
+</html>
