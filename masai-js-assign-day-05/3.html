@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music Playlist Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="playlist-manager">
+        <h1>Music Playlist Manager</h1>
+        <div class="input-fields">
+            <input type="text" id="title" placeholder="Song Title">
+            <input type="text" id="artist" placeholder="Artist">
+            <input type="text" id="duration" placeholder="Duration">
+            <input type="text" id="genre" placeholder="Genre">
+            <button id="add-song">Add Song</button>
+        </div>
+        <div class="sort-filter">
+            <select id="sort-options">
+                <option value="title">Title</option>
+                <option value="artist">Artist</option>
+                <option value="duration">Duration</option>
+                <option value="genre">Genre</option>
+            </select>
+            <button id="sort-playlist">Sort</button>
+            <input type="text" id="search" placeholder="Search by Title or Artist">
+            <button id="search-song">Search</button>
+            <select id="filter-genre">
+                <option value="all">All Genres</option>
+            </select>
+            <button id="filter-playlist">Filter</button>
+        </div>
+        <div class="playlist">
+            <h2>Playlist</h2>
+            <ul id="playlist-container"></ul>
+        </div>
+        <div class="user-playlists">
+            <h2>Your Playlists</h2>
+            <ul id="user-playlists-container"></ul>
+        </div>
+    </div>
+    <script >
+
+const playlist = JSON.parse(localStorage.getItem('playlist')) || [];
+const userPlaylists = JSON.parse(localStorage.getItem('userPlaylists')) || [];
+
+document.getElementById('add-song').addEventListener('click', addSong);
+document.getElementById('sort-playlist').addEventListener('click', sortPlaylist);
+document.getElementById('search-song').addEventListener('click', searchSongs);
+document.getElementById('filter-playlist').addEventListener('click', filterSongs);
+
+function addSong() {
+    const title = document.getElementById('title').value.trim();
+    const artist = document.getElementById('artist').value.trim();
+    const duration = document.getElementById('duration').value.trim();
+    const genre = document.getElementById('genre').value.trim();
+
+    if (title && artist && duration && genre) {
+        const song = { title, artist, duration, genre };
+        playlist.push(song);
+        localStorage.setItem('playlist', JSON.stringify(playlist));
+        displayPlaylist();
+    }
+}
+
+function displayPlaylist() {
+    const container = document.getElementById('playlist-container');
+    container.innerHTML = '';
+    playlist.forEach((song, index) => {
+        const songElement = document.createElement('li');
+        songElement.textContent = `${song.title} - ${song.artist} (${song.duration}) [${song.genre}]`;
+        container.appendChild(songElement);
+    });
+}
+
+function sortPlaylist() {
+    const sortOption = document.getElementById('sort-options').value;
+    playlist.sort((a, b) => a[sortOption].localeCompare(b[sortOption]));
+    localStorage.setItem('playlist', JSON.stringify(playlist));
+    displayPlaylist();
+}
+
+function searchSongs() {
+    const searchQuery = document.getElementById('search').value.toLowerCase();
+    const filteredSongs = playlist.filter(song => song.title.toLowerCase().includes(searchQuery) || song.artist.toLowerCase().includes(searchQuery));
+}
+
+function filterSongs() {
+    const selectedGenre = document.getElementById('filter-genre').value;
+    const filteredSongs = selectedGenre === 'all' ? playlist : playlist.filter(song => song.genre === selectedGenre);
+}
+
+function createPlaylist(name) {
+    const newPlaylist = { name, songs: [...playlist] };
+    userPlaylists.push(newPlaylist);
+    localStorage.setItem('userPlaylists', JSON.stringify(userPlaylists));
+}
+
+displayPlaylist();
+
+    </script>
+</body>
+</html>
