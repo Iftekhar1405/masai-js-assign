@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reminder Manager</title>
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    width: 300px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input, button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #5cb85c;
+    color: white;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover {
+    background-color: #4cae4c;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #eee;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+li button {
+    background-color: #d9534f;
+    border: none;
+    padding: 5px 10px;
+    color: white;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+li button:hover {
+    background-color: #c9302c;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Reminder Manager</h1>
+        <form id="reminder-form">
+            <input type="text" id="reminder-title" placeholder="Enter reminder" required>
+            <input type="datetime-local" id="reminder-time" required>
+            <button type="submit">Add Reminder</button>
+        </form>
+        <ul id="reminder-list"></ul>
+    </div>
+    <script>
+        const reminderForm = document.getElementById('reminder-form');
+const reminderList = document.getElementById('reminder-list');
+
+let reminders = [];
+
+reminderForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    
+    const title = document.getElementById('reminder-title').value;
+    const time = new Date(document.getElementById('reminder-time').value).getTime();
+    const id = Date.now();
+
+    const reminder = {
+        id,
+        title,
+        time
+    };
+    
+    reminders.push(reminder);
+    addReminderToList(reminder);
+    scheduleReminder(reminder);
+
+    reminderForm.reset();
+});
+
+function addReminderToList(reminder) {
+    const li = document.createElement('li');
+    li.id = `reminder-${reminder.id}`;
+    
+    li.innerHTML = `
+        <span>${reminder.title} - ${new Date(reminder.time).toLocaleString()}</span>
+        <div>
+            <button onclick="editReminder(${reminder.id})">Edit</button>
+            <button onclick="deleteReminder(${reminder.id})">Delete</button>
+        </div>
+    `;
+
+    reminderList.appendChild(li);
+}
+
+function scheduleReminder(reminder) {
+    const timeUntilReminder = reminder.time - Date.now();
+
+    if (timeUntilReminder >= 0) {
+        setTimeout(() => {
+            alert(`Reminder: ${reminder.title}`);
+            deleteReminder(reminder.id);
+        }, timeUntilReminder);
+    }
+}
+
+function editReminder(id) {
+    const reminder = reminders.find(rem => rem.id === id);
+    if (reminder) {
+        const newTitle = prompt('Edit your reminder:', reminder.title);
+        const newTime = new Date(prompt('Edit the reminder time:', new Date(reminder.time).toLocaleString())).getTime();
+
+        reminder.title = newTitle;
+        reminder.time = newTime;
+
+        const li = document.getElementById(`reminder-${id}`);
+        li.querySelector('span').textContent = `${reminder.title} - ${new Date(reminder.time).toLocaleString()}`;
+
+        scheduleReminder(reminder);
+    }
+}
+
+function deleteReminder(id) {
+    reminders = reminders.filter(rem => rem.id !== id);
+    document.getElementById(`reminder-${id}`).remove();
+}
+
+    </script>
+</body>
+</html>
