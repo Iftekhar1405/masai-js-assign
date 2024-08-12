@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #file-container{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            padding: 20px;
+        }
+        .file-item{
+            text-align: center;
+            width: 150px;
+            margin: 20px;
+        }
+        .file-item img{
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .file-item p{
+            margin-top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .delete{
+            width: 60%;
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <a href="./bin.html">
+        <button>BIN</button>
+    </a>
+    <div id="file-container">
+
+    </div>
+</body>
+<script>
+    const fileIcons = {
+    '.txt': 'https://via.placeholder.com/200?text=TXT',       
+    '.pdf': 'https://via.placeholder.com/200?text=PDF',      
+    '.mp3': 'https://via.placeholder.com/200?text=MP3',      
+    '.exe': 'https://via.placeholder.com/200?text=EXE',       
+    '.rar': 'https://via.placeholder.com/200?text=RAR',       
+    '.docx': 'https://via.placeholder.com/200?text=DOCX',    
+    '.jpg': 'https://via.placeholder.com/200?text=JPG',      
+    '.png': 'https://via.placeholder.com/200?text=PNG',       
+    '.gif': 'https://via.placeholder.com/200?text=GIF',       
+    '.zip': 'https://via.placeholder.com/200?text=ZIP',      
+};
+
+
+let deletedFiles = JSON.parse(localStorage.getItem('deletedFiles'))||[]
+let files = JSON.parse(localStorage.getItem('files'))||[
+  'document1.txt', 'presentation1.pdf', 'song1.mp3', 'installer1.exe', 'archive1.rar',
+  'report1.docx', 'image1.jpg', 'graphic1.png', 'animation1.gif', 'compressed1.zip',
+  'document2.txt', 'presentation2.pdf', 'song2.mp3', 'installer2.exe', 'archive2.rar',
+  'report2.docx', 'image2.jpg', 'graphic2.png', 'animation2.gif', 'compressed2.zip',
+  null, 'presentation3.pdf', '', 'installer3.exe', 'archive3.rar',
+  'report3.docx', 'image3.jpg', 'graphic3.png', 'animation3.gif', 'compressed3.zip',
+  'document4.txt', 'presentation4.pdf', 'song4.mp3', 'installer4.exe', 'archive4.rar',
+  'report4.docx', 'image4.jpg', 'graphic4.png', 'animation4.gif', 'compressed4.zip',
+  'document5.txt', 'presentation5.pdf', 'song5.mp3', 'installer5.exe', 'archive5.rar',
+  'report5.docx', 'image5.jpg', 'graphic5.png', 'animation5.gif', 'compressed5.zip',
+  'document6.txt', 'presentation6.pdf', 'song6.mp3', 'installer6.exe', 'archive6.rar',
+  'report6.docx', 'image6.jpg', null, 'animation6.gif', 'compressed6.zip',
+  'document7.txt', 'presentation7.pdf', 'song7.mp3', 'installer7.exe', 'archive7.rar',
+  'report7.docx', 'image7.jpg', 'graphic7.png', 'animation7.gif', 'compressed7.zip',
+  'document8.txt', 'presentation8.pdf', 'song8.mp3', 'installer8.exe', 'archive8.rar',
+  'report8.docx', 'image8.jpg', '', 'animation8.gif', 'compressed8.zip',
+  'document9.txt', 'presentation9.pdf', 'song9.mp3', 'installer9.exe', 'archive9.rar',
+  'report9.docx', 'image9.jpg', '', 'animation9.gif', 'compressed9.zip',
+  'document10.txt', 'presentation10.pdf', 'song10.mp3', 'installer10.exe', 'archive10.rar',
+  'report10.docx', 'image10.jpg', 'graphic10.png', 'animation10.gif', 'compressed10.zip',
+];
+let store = []
+function displayFiles(){
+
+files = files.filter(file => file )
+
+const fileContainer = document.getElementById('file-container')
+files.forEach((file,index) => {
+    const fileExtension = file.slice(file.lastIndexOf('.'))
+    const fileNameWithoutExtension = file.slice(0,file.lastIndexOf('.'))
+    const iconURL = fileIcons[fileExtension] ||fileExtension
+    const fileItem = document.createElement('div')
+    fileItem.className = 'file-item'
+    const fileIcon = document.createElement('img')
+    fileIcon.src = iconURL
+    const fileName = document.createElement('p')
+    fileName.textContent = fileNameWithoutExtension
+    fileItem.appendChild(fileIcon)
+    fileItem.appendChild(fileName)
+    const dlt = document.createElement('button')
+    dlt.className = 'delete'
+    dlt.textContent = 'DELETE'
+    dlt.onclick = ()=> deleteFile(index)
+    fileItem.appendChild(dlt)
+    fileContainer.appendChild(fileItem)
+    store.push(file)
+    
+})}
+
+
+function deleteFile(index){
+    const deletedFile = files.splice(index,1)[0]
+    localStorage.setItem('files',JSON.stringify(files))
+    deletedFiles.push(deletedFile)
+    localStorage.setItem('deletedFiles',JSON.stringify(deletedFiles))
+    console.log('deleted',index)
+
+    displayFiles()
+}
+displayFiles()
+localStorage.setItem('files',JSON.stringify(store))
+</script>
+</html>
