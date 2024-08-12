@@ -57,6 +57,11 @@
 
         // Retrieve deleted files from localStorage
         let deletedFiles = JSON.parse(localStorage.getItem('deletedFiles')) || [];
+        setInterval(() => {
+                            deletedFiles.shift()
+                            localStorage.setItem('deletedFiles',JSON.stringify(deletedFiles))
+                            displayFiles()
+                        }, 30000);
 
         // Function to display deleted files
         function displayFiles() {
