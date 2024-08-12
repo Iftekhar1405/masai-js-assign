@@ -3,88 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>File Bin</title>
     <style>
-        #file-container{
+        #file-container {
             display: flex;
             flex-wrap: wrap;
             gap: 20px;
             justify-content: center;
             padding: 20px;
         }
-        .file-item{
+        .file-item {
             text-align: center;
             width: 150px;
             margin: 20px;
         }
-        .file-item img{
+        .file-item img {
             width: 100px;
             height: 100px;
             object-fit: cover;
             border-radius: 10px;
         }
-        .file-item p{
+        .file-item p {
             margin-top: 10px;
             font-size: 16px;
             font-weight: bold;
         }
-        .delete{
+        .restore {
             width: 60%;
-            background-color: red;
+            background-color: green;
+            color: white;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-    <div id="file-container">
+    <div id="file-container"></div>
+    <script>
+        // File icons mapping
+        const fileIcons = {
+            '.txt': 'https://via.placeholder.com/200?text=TXT',       
+            '.pdf': 'https://via.placeholder.com/200?text=PDF',      
+            '.mp3': 'https://via.placeholder.com/200?text=MP3',      
+            '.exe': 'https://via.placeholder.com/200?text=EXE',       
+            '.rar': 'https://via.placeholder.com/200?text=RAR',       
+            '.docx': 'https://via.placeholder.com/200?text=DOCX',    
+            '.jpg': 'https://via.placeholder.com/200?text=JPG',      
+            '.png': 'https://via.placeholder.com/200?text=PNG',       
+            '.gif': 'https://via.placeholder.com/200?text=GIF',       
+            '.zip': 'https://via.placeholder.com/200?text=ZIP',      
+        };
 
-    </div>
+        // Retrieve deleted files from localStorage
+        let deletedFiles = JSON.parse(localStorage.getItem('deletedFiles')) || [];
+
+        // Function to display deleted files
+        function displayFiles() {
+            const fileContainer = document.getElementById('file-container');
+            fileContainer.innerHTML = ''; // Clear any existing content
+
+            deletedFiles.forEach((file, index) => {
+                const fileExtension = file.slice(file.lastIndexOf('.'));
+                const fileNameWithoutExtension = file.slice(0, file.lastIndexOf('.'));
+                const iconURL = fileIcons[fileExtension] || 'https://via.placeholder.com/200?text=FILE';
+
+                const fileItem = document.createElement('div');
+                fileItem.className = 'file-item';
+
+                const fileIcon = document.createElement('img');
+                fileIcon.src = iconURL;
+
+                const fileName = document.createElement('p');
+                fileName.textContent = fileNameWithoutExtension;
+
+                const restoreButton = document.createElement('button');
+                restoreButton.textContent = 'RESTORE';
+                restoreButton.className = 'restore';
+                restoreButton.onclick = () => restoreFile(index);
+
+                fileItem.appendChild(fileIcon);
+                fileItem.appendChild(fileName);
+                fileItem.appendChild(restoreButton);
+
+                fileContainer.appendChild(fileItem);
+            });
+        }
+
+        // Function to restore a file
+        function restoreFile(index) {
+            const restoredFile = deletedFiles.splice(index, 1)[0];
+            localStorage.setItem('deletedFiles', JSON.stringify(deletedFiles));
+
+            let files = JSON.parse(localStorage.getItem('files')) || [];
+            files.push(restoredFile); // Push the restored file into files array
+            localStorage.setItem('files', JSON.stringify(files));
+
+            displayFiles(); // Re-display the files after restoration
+        }
+
+        // Initial display of files
+        displayFiles();
+    </script>
 </body>
-<script>
-    const fileIcons = {
-    '.txt': 'https://via.placeholder.com/200?text=TXT',       
-    '.pdf': 'https://via.placeholder.com/200?text=PDF',      
-    '.mp3': 'https://via.placeholder.com/200?text=MP3',      
-    '.exe': 'https://via.placeholder.com/200?text=EXE',       
-    '.rar': 'https://via.placeholder.com/200?text=RAR',       
-    '.docx': 'https://via.placeholder.com/200?text=DOCX',    
-    '.jpg': 'https://via.placeholder.com/200?text=JPG',      
-    '.png': 'https://via.placeholder.com/200?text=PNG',       
-    '.gif': 'https://via.placeholder.com/200?text=GIF',       
-    '.zip': 'https://via.placeholder.com/200?text=ZIP',      
-};
-let deletedFiles = JSON.parse(localStorage.getItem('deletedFiles')) || []
-function displayFiles(){
-    const fileContainer = document.getElementById('file-container')
-    
-    
-    deletedFiles.forEach((file,index) => {
-    const fileExtension = file.slice(file.lastIndexOf('.'))
-    const fileNameWithoutExtension = file.slice(0,file.lastIndexOf('.'))
-    const iconURL = fileIcons[fileExtension] ||fileExtension
-    const fileItem = document.createElement('div')
-    fileItem.className = 'file-item'
-    const fileIcon = document.createElement('img')
-    fileIcon.src = iconURL
-    const fileName = document.createElement('p')
-    fileName.textContent = fileNameWithoutExtension
-    const restore = document.createElement('button')
-    restore.textContent = 'RESTORE'
-    restore.className = 'restore'
-    restore.onclick = ()=> restoreFile(index)
-    fileItem.appendChild(fileIcon)
-    fileItem.appendChild(fileName)
-    fileItem.appendChild(restore)
-    fileContainer.appendChild(fileItem)
-
-})}
-function restoreFile(index){
-    const restoredFile = deletedFiles.splice(index,1)[0]
-    localStorage.setItem('deletedFiles',JSON.stringify(deletedFiles))
-    let files = JSON.parse(localStorage.getItem('files'))||[]
-    files.push(restoreFile)
-    localStorage.setItem('files',JSON.stringify(files))
-    displayFiles()
-}
-displayFiles()
-</script>
 </html>
