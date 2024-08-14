@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users</title>
+</head>
+<body>
+    <div class="users" style="display: grid; grid-template-columns: repeat(5,1fr);"></div>
+</body>
+<script>
+    async function getUsers() {
+        let res = await fetch('https://reqres.in/api/users?page=2');
+        let dataRes = await res.json(); 
+
+        let users = document.querySelector('.users');
+        let userHtml = dataRes.data.map(elem => `
+            <div> 
+                <p>Id: ${elem.id}</p>
+                <p>Email: ${elem.email}</p>
+                <p>First Name: ${elem.first_name}</p>
+                <p>Last Name: ${elem.last_name}</p>
+                <img src="${elem.avatar}" alt="${elem.first_name}">
+            </div>
+        `).join(''); // Join the array into a single string
+
+        users.innerHTML = userHtml; // Set the HTML content
+    }
+    getUsers();
+</script>
+</html>
