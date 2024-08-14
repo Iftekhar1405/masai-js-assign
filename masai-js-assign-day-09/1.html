@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seafood Dishes</title>
+</head>
+<body>
+    <div class="seafood">
+
+    </div>
+    <div class="ingr">
+
+    </div>
+</body>
+<script>
+    async function seafood() {
+        let response = await fetch('https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood');
+        let data = await response.json(); // Convert response to JSON
+        console.log(data); // Log the data to see its structure
+
+        let seafoodContainer = document.querySelector('.seafood');
+        data.meals.forEach(meal => {
+            let mealDiv = document.createElement('div');
+            mealDiv.innerHTML = `
+                <h2>${meal.strMeal}</h2>
+                <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+            `;
+            seafoodContainer.appendChild(mealDiv);
+        });
+    }
+    async function ingr() {
+        let response = await fetch('https://www.themealdb.com/api/json/v1/1/filter.php?i=chicken_breast');
+        let data = await response.json(); // Convert response to JSON
+        console.log(data); // Log the data to see its structure
+
+        let ingrContainer = document.querySelector('.ingr');
+        data.meals.forEach(meal => {
+            let mealDiv = document.createElement('div');
+            mealDiv.innerHTML = `
+                <h2>${meal.strMeal}</h2>
+                <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+            `;
+            ingrContainer.appendChild(mealDiv);
+        });
+    }
+    seafood();
+    ingr()
+</script>
+</html>

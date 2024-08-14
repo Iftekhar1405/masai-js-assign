@@ -12,7 +12,6 @@ function CodingScoreCheck(scores, cutoff) {
     });
 }
 
-// Example usage
 const scores = [85, 90, 78, 88];
 const cutoff = 80;
 
