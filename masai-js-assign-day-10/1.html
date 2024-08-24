@@ -131,10 +131,8 @@ async function addTodo() {
     }
 }
 
-// Function to edit a todo
 function editTodo(index, element) {
-    todos[index].title = element.innerText; // Adjust based on API response structure
-    // You may want to update this on the server as well using a PATCH or PUT request
+    todos[index].title = element.innerText; 
 }
 
 // Function to delete a todo
@@ -150,7 +148,6 @@ async function deleteTodo(index, id) {
     }
 }
 
-// Function to go to the previous page
 function prevPage() {
     if (currentPage > 1) {
         currentPage--;
@@ -158,7 +155,6 @@ function prevPage() {
     }
 }
 
-// Function to go to the next page
 function nextPage() {
     if (currentPage * itemsPerPage < todos.length) {
         currentPage++;
@@ -166,7 +162,6 @@ function nextPage() {
     }
 }
 
-// Fetch and render todos on page load
 fetchTodos();
 </script>
 </body>
