@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    function iphone(ASIN,color,display,camera){
+        return{
+            ASIN,
+            color,
+            display,
+            camera,
+            dial : function(){
+                console.log('tring,tring')
+            },
+            sendMessage : function(){
+                console.log(`message sent via ${this.ASIN}`)
+            },
+            cameraClick : function(){
+                console.log(`photo clicked with ${this.camera} `)
+            }
+        }
+    }
+
+    let i1 = iphone('ketyu7867534','black','6.8 inch','312 MP',)
+    i1.sendMessage()
+</script>
