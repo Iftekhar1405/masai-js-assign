@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+</body>
+</html>
+<script>
+    class iphone{
+        constructor(ASIN,color,camera,bluetooth,display,processor){
+            this.ASIN = ASIN
+            this.color = color
+            this.camera = camera
+            this.bluetooth = bluetooth
+            this.display = display
+            this.processor = processor
+        }
+        getDetails(){
+            console.log(`ASIN : ${this.ASIN}, camera : ${this.camera}, color : ${this.color}, 
+            bluetooth : ${this.bluetooth}, display : ${this.display}, processor : ${this.processor}`)
+        }
+        dial (){
+                console.log('tring,tring')
+            }
+            sendMessage(){
+                console.log(`message sent via ${this.ASIN}`)
+            }
+            cameraClick(){
+                console.log(`photo clicked with ${this.camera} `)
+            }
+            connectBluetooth(){
+                console.log(`connected via bluetooth ${this.bluetooth} `)
+            }
+
+    }
+    let i4 = new iphone('gtii87876765','black','512MP',6.4,7.8,880)
+    i4.getDetails()
+    i4.cameraClick()
+    i4.connectBluetooth()
+    i4.sendMessage()
+    
+</script>
