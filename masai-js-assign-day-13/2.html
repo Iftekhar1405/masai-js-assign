@@ -10,12 +10,13 @@
 </body>
 </html>
 <script>
-    function iphone(ASIN,color,display,camera){
+    function iphone(ASIN,color,display,camera,bluetooth){
         return{
             ASIN,
             color,
             display,
             camera,
+            bluetooth,
             dial : function(){
                 console.log('tring,tring')
             },
@@ -24,11 +25,15 @@
             },
             cameraClick : function(){
                 console.log(`photo clicked with ${this.camera} `)
+            },
+            connectBluetooth : function(){
+                console.log(`connected via bluetooth ${this.bluetooth} `)
             }
         }
     }
 
-    let i1 = iphone('ketyu7867534','black','6.8 inch','312 MP',)
-    i1.sendMessage()
-    console.log(i1.ASIN)
+    let i3 = iphone('ketyu7867534','black','6.8 inch','312 MP','5.1')
+    i3.sendMessage()
+    i3.connectBluetooth()
+    console.log(i3.ASIN)
 </script>
