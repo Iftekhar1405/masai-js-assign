@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OMDB Search</title>
+</head>
+<body>
+    <input type="text" placeholder="Enter movie title" id="movie-query">
+    <div id="movie-info"></div>
+
+    <script>
+        const inputField = document.querySelector('#movie-query');
+        const body = document.querySelector('#movie-info');
+        let lastExcTime = 0
+        const throttleTime = 500
+
+        inputField.addEventListener('input', function(event) {
+            let query = inputField.value;   
+            let currTime = Date.now()
+            if(currTime - lastExcTime >= throttleTime){
+                fetchMovieData(query)
+                lastExcTime = Date.now()
+            }         
+        });
+        
+
+        function fetchMovieData(query) {
+            var requestOptions = {
+                method: 'GET',
+                redirect: 'follow'
+            };
+
+            fetch(`http://www.omdbapi.com/?t=${encodeURIComponent(query)}&apikey=10623699`, requestOptions)
+                .then(response => response.json())
+                .then(result => omdb(result))
+                .catch(error => console.log('error', error));
+        }
+
+        function omdb(data) {
+            body.innerHTML = ''; // Clear previous results
+
+            if (data.Response === "False") {
+                body.innerHTML = `<p>Movie not found!</p>`;
+                return;
+            }
+
+            let title = document.createElement('p');
+            let year = document.createElement('p');
+            let rated = document.createElement('p');
+            let released = document.createElement('p');
+            let runtime = document.createElement('p');
+            let genre = document.createElement('p');
+            let director = document.createElement('p');
+            let writer = document.createElement('p');
+            let actor = document.createElement('p');
+            let plot = document.createElement('p');
+            let award = document.createElement('p');
+            let boxOffice = document.createElement('p');
+            let country = document.createElement('p');
+            let imdbRating = document.createElement('p');
+            let img = document.createElement('img');
+
+            title.innerHTML = `Title: ${data.Title}`;
+            year.innerHTML = `Year: ${data.Year}`;
+            rated.innerHTML = `Rated: ${data.Rated}`;
+            released.innerHTML = `Released: ${data.Released}`;
+            runtime.innerHTML = `Runtime: ${data.Runtime}`;
+            genre.innerHTML = `Genre: ${data.Genre}`;
+            director.innerHTML = `Director: ${data.Director}`;
+            writer.innerHTML = `Writer: ${data.Writer}`;
+            actor.innerHTML = `Actors: ${data.Actors}`;
+            plot.innerHTML = `Plot: ${data.Plot}`;
+            award.innerHTML = `Awards: ${data.Awards}`;
+            boxOffice.innerHTML = `Box Office: ${data.BoxOffice}`;
+            country.innerHTML = `Country: ${data.Country}`;
+            imdbRating.innerHTML = `IMDB Rating: ${data.imdbRating}`;
+            img.src = data.Poster !== "N/A" ? data.Poster : '';
+            img.alt = `${data.Title} Poster`;
+            img.style.width = '200px';
+
+            body.appendChild(img);
+            body.appendChild(title);
+            body.appendChild(year);
+            body.appendChild(rated);
+            body.appendChild(released);
+            body.appendChild(runtime);
+            body.appendChild(genre);
+            body.appendChild(director);
+            body.appendChild(writer);
+            body.appendChild(actor);
+            body.appendChild(plot);
+            body.appendChild(award);
+            body.appendChild(boxOffice);
+            body.appendChild(country);
+            body.appendChild(imdbRating);
+        }
+    </script>
+</body>
+</html>
